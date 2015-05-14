@@ -1,0 +1,84 @@
+
+========================================================
+<h2><b>Predicting a child's adult height based on the parents height using a Shiny App and Galton's Research.</b></h2>
+<font size="6"></br></br>Francisco Jaramillo</br>
+May 11, 2015
+</font>
+<small></br>
+</br>Assignment #1
+</br>Developing Data Products Course
+</br>Data Science Specialization</br>
+Coursera and John Hopkins University</small>
+
+
+Presentation Objectives
+==================================
+<small>
+1) The main objective of this presentation is to introduce my Shiny App project. 
+
+My Shiny App project is a simple web tool to predict the adult height of a child based on the height of the parents. The App is based on the data and the calculations from Francis Galton's research.</br>
+
+
+2) The second objective of this presentation is to show some interesting facts about the work of Francis Galton which I learned on the Regression Models course  from the data Science Specialization of Coursera and John Hopkins University - Biostatistical Dept (B.Caffo, J.Leek and R.Peng)</small>
+
+<font size="4">
+
+ My shiny app: https://fjjaramillo.shinyapps.io/Galton/</br>
+Francis Galton Research (1886) http://galton.org/essays/1880-1889/galton-1886-jaigi-regression-stature.pdf</font>
+
+
+Francis Galton 
+======================================================
+<small>...one of the very first social scientists...(http://galton.org)
+
+- Sir Francis Galton, FRS was an English Victorian progressive, polymath, sociologist, psychologist, anthropologist, eugenicist, tropical explorer, geographer, inventor, meteorologist, proto-geneticist, psychometrician, and statistician. (http://Wikipedia.org)
+
+- Francis Galton discovered the concepts of regression and correlation, founded the journal Biometrika, and was the cousin of Charles Darwin.
+
+- Galton collected data on parents and their children's height and conducted research on that. In the next slide you will see a plot of the data and the regression lines which are the foundation of the prediction model used in the Shiny App.
+
+</small>
+
+
+
+==================================
+<small>This Plot shows: Linear regression line, prediction interval, confidence interval and Overlapped points.</br> <font size="3"> (Bigger shapes means higher number of overlapped points)</font></small>
+<center>
+```{r, echo=FALSE}
+library(UsingR)
+galtoncm <- galton*2.54 
+x<-galtoncm$parent
+y<-galtoncm$child
+d <- data.frame(x,y)
+lm1 <- lm(y~x,data=d)
+fit <- lm(y~x,data=d)
+xvals<-seq (min(x), max(x), by=.01)
+newdata <- data.frame(x = xvals)
+p1 <- predict(fit, newdata, interval = ("confidence"))
+p2 <- predict(fit, newdata, interval = ("prediction"))
+sunflowerplot(x, y, frame=FALSE,ylab="Child Height cm", xlab="Midparent Height cm",col = "red")
+abline(fit, lwd = 2)
+lines(xvals, p1[,2],col="darkgrey"); 
+lines(xvals, p1[,3],col="darkgrey")
+lines(xvals, p2[,2]); 
+lines(xvals, p2[,3])
+```
+<font size="3"></br>(Midparents height is the average between mother and father height, adjusting mother height with a coefficient of 1.08)</font></center>
+
+
+
+==================================
+<font size="8">Modern Relevance of Galton's Research </br>and Shiny App</font>
+<small>
+</br>Article in "Wired" magazine on March 2009: </br><b>Predicting height: the Victorian approach beats modern genomics.</b>
+<font size="4">
+(http://www.wired.com/2009/03/predicting-height-the-victorian-approach-beats-modern-genomics/)</br>
+</font></br>
+As per the article, generating predictions using genomic data is so complex that currently the predictive power of modern genetics is not more accurate than the method for height prediction developed back in 1886 by Sir Francis Galton. 
+
+So, with this introduction I present you a humble Shiny App which can be more accurate than a genomic prediction...
+
+</small>
+<font size="8">https://fjjaramillo.shinyapps.io/Galton/
+
+<p align="right"><font size="4"> Nevertheless, that article is from 2009. Science and Genomic Research doesn't stop...</font></p>
